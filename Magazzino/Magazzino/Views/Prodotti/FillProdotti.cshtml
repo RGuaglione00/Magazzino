@@ -1,0 +1,36 @@
+﻿@model Magazzino.Models.Prodotti
+
+@using (Html.BeginForm("FillProdotti", "Prodotti"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Inserimento Prodotti</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        @Html.Label("Numero prodotti da inserire ")
+        <input type="number" class="Nprodotti" name="numeroInserimenti" value="0" />
+     
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="submit" id="Salva" class="btn btn-primary ">Conferma</button>
+    </div>
+    if (TempData["ResultMessage"] != null)
+    {
+        if (TempData["ResultMessage"] == Convert.ToString("Inserimento avvenuto con successo"))
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["ResultMessage"]
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ResultMessage"]
+            </div>
+        }
+    }
+}

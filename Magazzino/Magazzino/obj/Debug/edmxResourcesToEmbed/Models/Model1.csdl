@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MAGAZZINO_COLLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CategoriaProdotti">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Codice" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Descrizione" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Attivo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Prodotti" Relationship="Self.FK_Prodotti_CategoriaProdotti" FromRole="CategoriaProdotti" ToRole="Prodotti" />
+  </EntityType>
+  <EntityType Name="Prodotti">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Codice" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Descrizione" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantita" Type="Int32" Nullable="false" />
+    <Property Name="Prezzo" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Profondita" Type="Int32" />
+    <Property Name="Larghezza" Type="Int32" />
+    <Property Name="Altezza" Type="Int32" />
+    <Property Name="Attivo" Type="Boolean" Nullable="false" />
+    <Property Name="DataProduzione" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DataCessazione" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="IdCategoriaProdotti" Type="Int32" />
+    <Property Name="IdProduttori" Type="Int32" />
+    <NavigationProperty Name="CategoriaProdotti" Relationship="Self.FK_Prodotti_CategoriaProdotti" FromRole="Prodotti" ToRole="CategoriaProdotti" />
+    <NavigationProperty Name="Produttori" Relationship="Self.FK_Prodotti_Produttori" FromRole="Prodotti" ToRole="Produttori" />
+  </EntityType>
+  <EntityType Name="Produttori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Codice" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Nominativo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Attivo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Prodotti" Relationship="Self.FK_Prodotti_Produttori" FromRole="Produttori" ToRole="Prodotti" />
+  </EntityType>
+  <EntityType Name="vProdotti">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="Codice" />
+      <PropertyRef Name="Descrizione" />
+      <PropertyRef Name="Quantita" />
+      <PropertyRef Name="Attivo" />
+      <PropertyRef Name="DescCategoriaProdotti" />
+      <PropertyRef Name="DescProduttori" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Codice" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Descrizione" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantita" Type="Int32" Nullable="false" />
+    <Property Name="Prezzo" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Dimensione" Type="String" MaxLength="92" FixedLength="false" Unicode="true" />
+    <Property Name="Attivo" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DataProduzione" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="DescCategoriaProdotti" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DescProduttori" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdCategoriaProdotti" Type="Int32" />
+    <Property Name="IdProduttori" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Prodotti_CategoriaProdotti">
+    <End Role="CategoriaProdotti" Type="Self.CategoriaProdotti" Multiplicity="0..1" />
+    <End Role="Prodotti" Type="Self.Prodotti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CategoriaProdotti">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Prodotti">
+        <PropertyRef Name="IdCategoriaProdotti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Prodotti_Produttori">
+    <End Role="Produttori" Type="Self.Produttori" Multiplicity="0..1" />
+    <End Role="Prodotti" Type="Self.Prodotti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Produttori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Prodotti">
+        <PropertyRef Name="IdProduttori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MAGAZZINO_COLLEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CategoriaProdotti" EntityType="Self.CategoriaProdotti" />
+    <EntitySet Name="Prodotti" EntityType="Self.Prodotti" />
+    <EntitySet Name="Produttori" EntityType="Self.Produttori" />
+    <EntitySet Name="vProdotti" EntityType="Self.vProdotti" />
+    <AssociationSet Name="FK_Prodotti_CategoriaProdotti" Association="Self.FK_Prodotti_CategoriaProdotti">
+      <End Role="CategoriaProdotti" EntitySet="CategoriaProdotti" />
+      <End Role="Prodotti" EntitySet="Prodotti" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Prodotti_Produttori" Association="Self.FK_Prodotti_Produttori">
+      <End Role="Produttori" EntitySet="Produttori" />
+      <End Role="Prodotti" EntitySet="Prodotti" />
+    </AssociationSet>
+    <FunctionImport Name="spFillProdotti" ReturnType="Collection(String)">
+      <Parameter Name="NumeroInserimenti" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetProdottiAttiviByIdProduttore" ReturnType="Collection(MAGAZZINO_COLLModel.spGetProdottiAttiviByIdProduttore_Result)">
+      <Parameter Name="IdProduttori" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="spGetProdottiAttiviByIdProduttore_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Codice" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="Descrizione" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="Quantita" Nullable="false" />
+    <Property Type="Decimal" Name="Prezzo" Nullable="true" Precision="19" />
+    <Property Type="String" Name="Dimensione" Nullable="true" MaxLength="92" />
+    <Property Type="String" Name="Attivo" Nullable="false" MaxLength="2" />
+    <Property Type="String" Name="DataProduzione" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="DescCategoriaProdotti" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="DescProduttori" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="IdCategoriaProdotti" Nullable="true" />
+    <Property Type="Int32" Name="IdProduttori" Nullable="true" />
+  </ComplexType>
+</Schema>

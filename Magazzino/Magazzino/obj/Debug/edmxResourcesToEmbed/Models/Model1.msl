@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MAGAZZINO_COLLModelStoreContainer" CdmEntityContainer="MAGAZZINO_COLLEntities2">
+    <EntitySetMapping Name="CategoriaProdotti">
+      <EntityTypeMapping TypeName="MAGAZZINO_COLLModel.CategoriaProdotti">
+        <MappingFragment StoreEntitySet="CategoriaProdotti">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codice" ColumnName="Codice" />
+          <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+          <ScalarProperty Name="Attivo" ColumnName="Attivo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prodotti">
+      <EntityTypeMapping TypeName="MAGAZZINO_COLLModel.Prodotti">
+        <MappingFragment StoreEntitySet="Prodotti">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codice" ColumnName="Codice" />
+          <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+          <ScalarProperty Name="Quantita" ColumnName="Quantita" />
+          <ScalarProperty Name="Prezzo" ColumnName="Prezzo" />
+          <ScalarProperty Name="Profondita" ColumnName="Profondita" />
+          <ScalarProperty Name="Larghezza" ColumnName="Larghezza" />
+          <ScalarProperty Name="Altezza" ColumnName="Altezza" />
+          <ScalarProperty Name="Attivo" ColumnName="Attivo" />
+          <ScalarProperty Name="DataProduzione" ColumnName="DataProduzione" />
+          <ScalarProperty Name="DataCessazione" ColumnName="DataCessazione" />
+          <ScalarProperty Name="IdCategoriaProdotti" ColumnName="IdCategoriaProdotti" />
+          <ScalarProperty Name="IdProduttori" ColumnName="IdProduttori" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Produttori">
+      <EntityTypeMapping TypeName="MAGAZZINO_COLLModel.Produttori">
+        <MappingFragment StoreEntitySet="Produttori">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codice" ColumnName="Codice" />
+          <ScalarProperty Name="Nominativo" ColumnName="Nominativo" />
+          <ScalarProperty Name="Attivo" ColumnName="Attivo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vProdotti">
+      <EntityTypeMapping TypeName="MAGAZZINO_COLLModel.vProdotti">
+        <MappingFragment StoreEntitySet="vProdotti">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codice" ColumnName="Codice" />
+          <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+          <ScalarProperty Name="Quantita" ColumnName="Quantita" />
+          <ScalarProperty Name="Prezzo" ColumnName="Prezzo" />
+          <ScalarProperty Name="Dimensione" ColumnName="Dimensione" />
+          <ScalarProperty Name="Attivo" ColumnName="Attivo" />
+          <ScalarProperty Name="DataProduzione" ColumnName="DataProduzione" />
+          <ScalarProperty Name="DescCategoriaProdotti" ColumnName="DescCategoriaProdotti" />
+          <ScalarProperty Name="DescProduttori" ColumnName="DescProduttori" />
+          <ScalarProperty Name="IdCategoriaProdotti" ColumnName="IdCategoriaProdotti" />
+          <ScalarProperty Name="IdProduttori" ColumnName="IdProduttori" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spFillProdotti" FunctionName="MAGAZZINO_COLLModel.Store.spFillProdotti" />
+    <FunctionImportMapping FunctionImportName="spGetProdottiAttiviByIdProduttore" FunctionName="MAGAZZINO_COLLModel.Store.spGetProdottiAttiviByIdProduttore">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MAGAZZINO_COLLModel.spGetProdottiAttiviByIdProduttore_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codice" ColumnName="Codice" />
+          <ScalarProperty Name="Descrizione" ColumnName="Descrizione" />
+          <ScalarProperty Name="Quantita" ColumnName="Quantita" />
+          <ScalarProperty Name="Prezzo" ColumnName="Prezzo" />
+          <ScalarProperty Name="Dimensione" ColumnName="Dimensione" />
+          <ScalarProperty Name="Attivo" ColumnName="Attivo" />
+          <ScalarProperty Name="DataProduzione" ColumnName="DataProduzione" />
+          <ScalarProperty Name="DescCategoriaProdotti" ColumnName="DescCategoriaProdotti" />
+          <ScalarProperty Name="DescProduttori" ColumnName="DescProduttori" />
+          <ScalarProperty Name="IdCategoriaProdotti" ColumnName="IdCategoriaProdotti" />
+          <ScalarProperty Name="IdProduttori" ColumnName="IdProduttori" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

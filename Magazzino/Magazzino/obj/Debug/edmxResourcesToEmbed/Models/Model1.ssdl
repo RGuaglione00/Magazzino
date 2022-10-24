@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MAGAZZINO_COLLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CategoriaProdotti">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codice" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Descrizione" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Attivo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Prodotti">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codice" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Descrizione" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Quantita" Type="int" Nullable="false" />
+    <Property Name="Prezzo" Type="money" />
+    <Property Name="Profondita" Type="int" />
+    <Property Name="Larghezza" Type="int" />
+    <Property Name="Altezza" Type="int" />
+    <Property Name="Attivo" Type="bit" Nullable="false" />
+    <Property Name="DataProduzione" Type="date" Nullable="false" />
+    <Property Name="DataCessazione" Type="date" Nullable="false" />
+    <Property Name="IdCategoriaProdotti" Type="int" />
+    <Property Name="IdProduttori" Type="int" />
+  </EntityType>
+  <EntityType Name="Produttori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codice" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Nominativo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Attivo" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'MAGAZZINO_COLL.dbo.vProdotti'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+  <EntityType Name="vProdotti">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="Codice" />
+      <PropertyRef Name="Descrizione" />
+      <PropertyRef Name="Quantita" />
+      <PropertyRef Name="Attivo" />
+      <PropertyRef Name="DescCategoriaProdotti" />
+      <PropertyRef Name="DescProduttori" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Codice" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Descrizione" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Quantita" Type="int" Nullable="false" />
+    <Property Name="Prezzo" Type="money" />
+    <Property Name="Dimensione" Type="nvarchar" MaxLength="92" />
+    <Property Name="Attivo" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="DataProduzione" Type="varchar" MaxLength="30" />
+    <Property Name="DescCategoriaProdotti" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DescProduttori" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IdCategoriaProdotti" Type="int" />
+    <Property Name="IdProduttori" Type="int" />
+  </EntityType>
+  <Association Name="FK_Prodotti_CategoriaProdotti">
+    <End Role="CategoriaProdotti" Type="Self.CategoriaProdotti" Multiplicity="0..1" />
+    <End Role="Prodotti" Type="Self.Prodotti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CategoriaProdotti">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Prodotti">
+        <PropertyRef Name="IdCategoriaProdotti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Prodotti_Produttori">
+    <End Role="Produttori" Type="Self.Produttori" Multiplicity="0..1" />
+    <End Role="Prodotti" Type="Self.Prodotti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Produttori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Prodotti">
+        <PropertyRef Name="IdProduttori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="spFillProdotti" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NumeroInserimenti" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGetProdottiAttiviByIdProduttore" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IdProduttori" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="MAGAZZINO_COLLModelStoreContainer">
+    <EntitySet Name="CategoriaProdotti" EntityType="Self.CategoriaProdotti" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Prodotti" EntityType="Self.Prodotti" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Produttori" EntityType="Self.Produttori" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vProdotti" EntityType="Self.vProdotti" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vProdotti].[Id] AS [Id], 
+    [vProdotti].[Codice] AS [Codice], 
+    [vProdotti].[Descrizione] AS [Descrizione], 
+    [vProdotti].[Quantita] AS [Quantita], 
+    [vProdotti].[Prezzo] AS [Prezzo], 
+    [vProdotti].[Dimensione] AS [Dimensione], 
+    [vProdotti].[Attivo] AS [Attivo], 
+    [vProdotti].[DataProduzione] AS [DataProduzione], 
+    [vProdotti].[DescCategoriaProdotti] AS [DescCategoriaProdotti], 
+    [vProdotti].[DescProduttori] AS [DescProduttori], 
+    [vProdotti].[IdCategoriaProdotti] AS [IdCategoriaProdotti], 
+    [vProdotti].[IdProduttori] AS [IdProduttori]
+    FROM [dbo].[vProdotti] AS [vProdotti]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Prodotti_CategoriaProdotti" Association="Self.FK_Prodotti_CategoriaProdotti">
+      <End Role="CategoriaProdotti" EntitySet="CategoriaProdotti" />
+      <End Role="Prodotti" EntitySet="Prodotti" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Prodotti_Produttori" Association="Self.FK_Prodotti_Produttori">
+      <End Role="Produttori" EntitySet="Produttori" />
+      <End Role="Prodotti" EntitySet="Prodotti" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

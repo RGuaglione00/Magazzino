@@ -1,0 +1,223 @@
+﻿@model Magazzino.Models.CategoriaProdotti
+
+@{
+    ViewBag.Title = "Gestione Prodotti";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Gestione Prodotti</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-2 text-center">
+                <h3><b>Categoria:</b></h3>
+            </div>
+            <div class="col-4 text-start">
+                @Html.DropDownList("selectedIdCategoria",
+                    new SelectList(ViewBag.ListaCategorie, "Value", "Text", new { @class = "dropdown-item active" }), "Seleziona Categoria", new { @class = "btn btn-primary dropdown-toggle", @placeholder = "Seleziona Categoria"})
+
+            </div>
+            <div class="col text-end">
+                <button type="button" id="Cancella" class="btn btn-danger" onclick="EliminaProdotti()">
+                    Cancella Prodotti
+                </button>
+            </div>
+            <div class="col text-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Inserisci Prodotti
+                </button>
+            </div>
+        </div>
+    </div>
+
+}
+@if (TempData["DeleteMessage"] != null)
+{
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            
+            <strong class="me-auto">Cancella Prodotti</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            @TempData["DeleteMessage"]
+        </div>
+    </div>
+
+}
+
+
+
+
+
+@* test modal *@
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @Html.Partial("FillProdotti")
+        </div>
+    </div>
+</div>
+<div>
+    <label id="Prova"></label>
+</div>
+
+
+
+<div class="container p-2">
+    <div id="">
+        <label id="NProdotti">
+
+        </label>
+        <table id="tableProdotti" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Codice
+                    </th>
+                    <th>
+                        Descrizione
+                    </th>
+                    <th>
+                        Quantita
+                    </th>
+                    <th>
+                        Prezzo
+                    </th>
+                    <th>
+                        Dimensione
+                    </th>
+                    <th>
+                        Attivo
+                    </th>
+                    <th>
+                        Data Produzione
+                    </th>
+                    <th>
+                        Produttore
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="ListaProdotti">
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var errore = @Html.Raw(Json.Encode(TempData["ResultMessage"]));
+
+            if (errore != null) {
+                $("#exampleModal").modal('show');
+            }               
+
+
+            $('#tableProdotti').hide();
+            $("#selectedIdCategoria").change(function () {
+                var ProdId = this.value;
+                $('#ListaProdotti').empty();
+                $.ajax({
+                    url: '/Prodotti/ListaProdotti',
+                    method: 'GET',
+                    data: { 'search': ProdId },
+                    contentType: 'application/json',
+                    dataType: "json",
+                    success: function (data) {
+
+
+                        $.each(data, function (i, v) {
+                            $('#tableProdotti').show();
+                            $('#ListaProdotti').show();
+                            $('#NProdotti').empty();
+                            $('#ListaProdotti').append("<tr>" +
+                                "<td>" + v.Codice + "</td>" +
+                                "<td>" + v.Descrizione + "</td>" +
+                                "<td>" + v.Quantita + "</td>" +
+                                "<td>" + v.Prezzo + "</td>" +
+                                "<td>" + v.Dimensione + "</td>" +
+                                "<td>" + v.Attivo + "</td>" +
+                                "<td>" + v.DataProduzione + "</td>" +
+                                "<td>" + v.DescProduttore + "</td>" +
+                                "<td>" + v.DescCategoria + "</td>" +
+
+                                +"</tr>");
+                        })
+
+                    },
+                    error: function (data) {
+                        if (ProdId == 0) {
+                            $('#NProdotti').empty();
+                            $('#tableProdotti').hide();
+
+                        }
+                        else {
+                            $('#NProdotti').empty();
+                            $('#tableProdotti').hide();
+                            $('#NProdotti').append("Non ci sono prodotti per questa categoria ");
+                        }
+
+                    }
+                })
+            });
+
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.toast').toast('show');
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+
+
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            var myModal = document.getElementById('myModal')
+            var myInput = document.getElementById('myInput')
+
+            if (TempData["ResultMessage"] == null) {
+                $(myModal).modal('show')
+            }
+
+            myModal.addEventListener('shown.bs.modal', function () {
+                myInput.focus()
+            })
+        })
+    </script>
+    <script type="text/javascript">
+        function EliminaProdotti() {
+            var catId = this.selectedIdCategoria.value;
+
+            if (catId != null && catId > 0) {
+
+                var url = '@Url.Action("EliminaProdottiByIdCategoria", "Prodotti", new {id = "__id__"})';
+                url = url.replace("__id__", catId.toString());
+                window.location = url;
+            }
+            else {
+                var url = '@Url.Action("EliminaProdottiByIdCategoria", "Prodotti", new {id = "__id__"})';
+                url = url.replace("__id__",0);
+                window.location = url;
+            }
+
+        }
+
+    </script>
+ 
+}
